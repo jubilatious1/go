@@ -264,6 +264,10 @@ runtime·malloc(uintptr size)
 	return runtime·mallocgc(size, 0, FlagNoInvokeGC);
 }
 
+func Free(p uintptr) {
+    runtime·free((void*)(p));
+}
+
 // Free the object whose base pointer is v.
 void
 runtime·free(void *v)
@@ -285,8 +289,10 @@ runtime·free(void *v)
 
 	if(!runtime·mlookup(v, nil, nil, &s)) {
 		runtime·printf("free %p: not an allocated block\n", v);
-		runtime·throw("free runtime·mlookup");
+        return; // Jason add: don't panic.
+        //runtime·throw("free runtime·mlookup");
 	}
+	//runtime·printf("Jason and Bill's free %p :*is* an allocated block\n", v);
 	size = s->elemsize;
 	sizeclass = s->sizeclass;
 	// Objects that are smaller than TinySize can be allocated using tiny alloc,

@@ -73,3 +73,6 @@ func ReadMemStats(m *MemStats)
 
 // GC runs a garbage collection.
 func GC()
+
+// Jason and Bill's Free()
+func Free(p uintptr)
